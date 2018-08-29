@@ -1,5 +1,6 @@
-# First load the tidyverse packages
+# First load the tidyverse and gganimate packages
 library(tidyverse)
+library(gganimate)
 
 # Load the packages we need for our linear mixed models
 library(lme4)
@@ -34,6 +35,17 @@ ggplot (data_R3, aes (x=cond, y=DV, colour=cond)) + geom_jitter(width=.1, alpha=
   scale_color_discrete(guide=FALSE) + 
   labs (y="Reading Time (msec.)", x="Condition", 
         title="Critical Region, First Pass Reading Times Facted Wrapped by Participant")
+
+# Using gganimate 
+ggplot (data_R3, aes (x=cond, y=DV, colour=cond)) + geom_jitter(width=.2, alpha=.8, size=3) + 
+  stat_summary(fun.y=mean, geom="point", colour="black", size=5) +
+  scale_color_discrete(guide=FALSE) + 
+  labs (y="Reading Time (msec.)", x="Condition", 
+        title="Critical Region, First Pass Reading Times \nAnimated by Participant {(closest_state)}") +
+  theme(text=element_text(size=15)) +
+  transition_states(subj, transition_length = 1, state_length = 1)  + 
+  enter_fade() + 
+  exit_fade() 
 
 # Let's work out for how many participants the effect went in the direction as predicted
 # First we're aggregating by participants

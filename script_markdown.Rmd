@@ -250,6 +250,24 @@ summary (model)
 emmeans (model, pairwise~cond, adjust="none")
 ```
 
+Looking at the first pass data animated by Region.
+
+```{r}
+data1 <- filter(data, reg!="R0" & DV > 0)
+
+ggplot (data1, aes (x=cond, y=DV, colour=cond)) + geom_jitter(width=.2, alpha=.8, size=3) + 
+  geom_boxplot(width = .5,  outlier.shape = NA, alpha = 0.3, colour="black") +
+  scale_color_discrete(guide=FALSE) + 
+  labs (y="Reading Time (msec.)", x="Condition", 
+        title="First Pass Reading Times Animated by Region. \nThe Critical Region is R3. \nCurrent Region is {(closest_state)}") +
+  theme(text=element_text(size=15)) +
+  coord_flip() +
+  transition_states(reg, transition_length = 1, state_length = 1)  + 
+  enter_fade() + 
+  exit_fade() 
+```
+
+
 Read in the Regressions Out data.
 
 ```{r}

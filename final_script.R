@@ -232,3 +232,22 @@ summary (model)
 # As model is significant, run some pairwise comparisions to determine where the effect is. Ask for the
 # output on the response scale.
 emmeans (model, pairwise~cond, adjust="none", type="response")
+
+# Animate % Regressions our by Region
+data <- filter (FPRO, cond != "C0" & reg!="R0" & reg!="R9" & reg!="R8" & reg!="R7" & reg!="R6")
+
+data$cond <- recode (data$cond, "C1"="Neutral", "C2"="Negative", "C3"="Positive")
+data$cond <- as.factor (data$cond)
+
+data_summ <- data %>% group_by(reg, subj, cond) %>% summarise(mean=mean(DV))
+
+ggplot (data_summ, aes (x=cond, y=mean, colour=cond)) + geom_point(alpha=.8, size=3) + 
+  scale_color_discrete(guide=FALSE) + 
+  geom_boxplot(width = .5,  outlier.shape = NA, alpha = 0.3, colour="black") +
+  labs (y="Regressions Out (%)", x="Condition", 
+        title="% of Regressions Out Animated by Region. \nThe Critical Region is R3. \nCurrent Region is {(closest_state)}") +
+  theme(text=element_text(size=15)) +
+  coord_flip() +
+  transition_states(reg, transition_length = 1, state_length = 1)  + 
+  enter_fade() + 
+  exit_fade() 

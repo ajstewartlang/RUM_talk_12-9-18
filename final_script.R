@@ -18,6 +18,8 @@ data <- read_csv("fpfp0.ixs")
 # Relabel the Condition variable ("cond") and set as factor
 data$cond <- recode (data$cond, "C1"="Neutral", "C2"="Negative", "C3"="Positive")
 data$cond <- as.factor(data$cond)
+data$subj <- as.factor(data$subj)
+data$item <- as.factor(data$item)
 
 # Filter so we only have the Region 3 data - this is our critical analysis region
 # Ignore any zero reading times - these will be tracker loss/missing data
